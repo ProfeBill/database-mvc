@@ -42,7 +42,6 @@ def Insertar( usuario : Usuario ):
 
         # Las instrucciones DDL y DML no retornan resultados, por eso no necesitan fetchall()
         # pero si necesitan commit() para hacer los cambios persistentes
-
         cursor.connection.commit()
     except  :
         cursor.connection.rollback() 
@@ -58,3 +57,27 @@ def BuscarPorCedula( cedula :str ):
 
     resultado = Usuario( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7])
     return resultado
+
+def Actualizar( usuario : Usuario ):
+    """
+    Actualiza los datos de un usuario en la base de datos
+
+    El atributo cedula nunca se debe cambiar, porque es la clave primaria
+    """
+    cursor = ObtenerCursor()
+    cursor.execute(f"""
+        update usuarios
+        set 
+            nombre='{usuario.nombre}',
+            apellido='{usuario.apellido}',
+            telefono='{usuario.telefono}',
+            direccion='{usuario.direccion}',
+            correo='{usuario.correo}',
+            codigo_departamento='{usuario.codigo_departamento}',
+            codigo_municipio='{usuario.codigo_municipio}'
+        where cedula='{usuario.cedula}'
+    """)
+    # Las instrucciones DDL y DML no retornan resultados, por eso no necesitan fetchall()
+    # pero si necesitan commit() para hacer los cambios persistentes
+    cursor.connection.commit()
+
