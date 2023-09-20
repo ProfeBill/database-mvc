@@ -10,10 +10,31 @@ class ControllerTest(unittest.TestCase):
         Pruebas a la Clase Controlador de la aplicación
     """
 
+    # TEST FIXTURES
+    # Codigo que se ejecuta antes de cada prueba
+
+    def setUp(self):
+        """ Se ejecuta siempre antes de cada metodo de prueba """
+        print("Invocando setUp")
+        ControladorUsuarios.BorrarFilas() # Asegura que antes de cada metodo de prueba, se borren todos los datos de la tabla
+
+    def setUpClass():
+        """ Se ejecuta al inicio de todas las pruebas """
+        print("Invocando setUpClass")
+        ControladorUsuarios.CrearTabla()  # Asegura que al inicio de las pruebas, la tabla este creada
+
+    def tearDown(self):
+        """ Se ejecuta al final de cada test """
+        print("Invocnado tearDown")
+
+    def tearDownClass():
+        """ Se ejecuta al final de todos los tests """
+        print("Invocando tearDownClass")
+
     def testInsert(self):
         """ Verifica que funcione bien la creacion y la busqueda de un usuario """
         # Pedimos crear un usuario
-
+        print("Ejecutando testInsert")
         usuario_prueba = Usuario( "123456", "Usuario", "Prueba", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
 
         ControladorUsuarios.Insertar( usuario_prueba )
@@ -35,6 +56,7 @@ class ControllerTest(unittest.TestCase):
         """
         Verifica la funcionalidad de actualizar los datos de un usuario
         """
+        print("Ejecutando testUpdate")
         # 1. Crear el usuario
         usuario_prueba = Usuario( "654987", "Señor", "tester", "tampoco@tiene.correo", "rural", "8888888", "63", "63001"  ) 
         ControladorUsuarios.Insertar( usuario_prueba )
@@ -64,6 +86,21 @@ class ControllerTest(unittest.TestCase):
         self.assertEqual( usuario_prueba.telefono, usuario_actualizado.telefono )
         self.assertEqual( usuario_prueba.codigo_departamento, usuario_actualizado.codigo_departamento )
         self.assertEqual( usuario_prueba.codigo_municipio, usuario_actualizado.codigo_municipio )
+
+    def testDelete(self):
+        """ Prueba la funcionalidad de borrar usuarios """
+        print("Ejecutando testDelete")
+        # 1. Crear el usuario e insertarlo
+        usuario_prueba = Usuario( "741852369", "Borrenmme", "Please", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
+        ControladorUsuarios.Insertar( usuario_prueba )
+
+        # 2. Borrarlo
+        ControladorUsuarios.Borrar( usuario_prueba)
+
+        # 3. Buscar para verificar que no exista
+        self.assertRaises( ControladorUsuarios.ErrorNoEncontrado, ControladorUsuarios.BuscarPorCedula, usuario_prueba.cedula )
+
+
 
 # Este fragmento de codigo permite ejecutar la prueb individualmente
 # Va fijo en todas las pruebas
