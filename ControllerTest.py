@@ -100,6 +100,17 @@ class ControllerTest(unittest.TestCase):
         # 3. Buscar para verificar que no exista
         self.assertRaises( ControladorUsuarios.ErrorNoEncontrado, ControladorUsuarios.BuscarPorCedula, usuario_prueba.cedula )
 
+    def testGrupoFamiliar(self):
+        usuario_prueba = Usuario( "741852369", "Borrenmme", "Please", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
+        # Parametros: Parentezco, nombre, apellido, fecha nacimiento 
+        usuario_prueba.agregarFamiliar( "PADRE", "Papa", "Prueba", "1948-03-10" )
+        usuario_prueba.agregarFamiliar( "MADRE", "Mama", "Test", "1958-08-15" )
+
+        ControladorUsuarios.Insertar( usuario_prueba )
+        usuario_buscado = ControladorUsuarios.BuscarPorCedula( usuario_prueba.cedula )
+
+        usuario_prueba.esIgual( usuario_buscado )
+
 
 
 # Este fragmento de codigo permite ejecutar la prueb individualmente
