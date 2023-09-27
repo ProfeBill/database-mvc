@@ -112,6 +112,18 @@ class ControllerTest(unittest.TestCase):
         usuario_prueba.esIgual( usuario_buscado )
 
 
+    def testGrupoFamiliarHijos(self):
+        usuario_prueba = Usuario( "654321987", "Otra", "Persona", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
+        # Parametros: Parentezco, nombre, apellido, fecha nacimiento 
+        usuario_prueba.agregarFamiliar( "HIJO", "Benito", "Persona", "1998-03-10" )
+        usuario_prueba.agregarFamiliar( "HIJO", "Juanito", "Persona", "1999-08-15" )
+
+        ControladorUsuarios.Insertar( usuario_prueba )
+        usuario_buscado = ControladorUsuarios.BuscarPorCedula( usuario_prueba.cedula )
+
+        usuario_prueba.esIgual( usuario_buscado )
+
+
 
 # Este fragmento de codigo permite ejecutar la prueb individualmente
 # Va fijo en todas las pruebas

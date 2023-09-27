@@ -9,3 +9,10 @@ create table usuarios (
   codigo_municipio varchar(40) not null,
   codigo_departamento varchar(40) NOT NULL
 ); 
+
+create table familiares (
+  parentezco varchar(40), 
+  nombre text, 
+  apellido text, 
+  fecha_nacimiento date
+);

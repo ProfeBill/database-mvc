@@ -95,6 +95,8 @@ def Insertar( usuario : Usuario ):
             '{usuario.cedula}',  '{usuario.nombre}', '{usuario.apellido}', '{usuario.telefono}', '{usuario.correo}', '{usuario.direccion}', '{usuario.codigo_municipio}', '{usuario.codigo_departamento}'
         );
                        """)
+        
+        InsertarFamiliares( usuario )
 
         # Las instrucciones DDL y DML no retornan resultados, por eso no necesitan fetchall()
         # pero si necesitan commit() para hacer los cambios persistentes
@@ -103,6 +105,24 @@ def Insertar( usuario : Usuario ):
         cursor.connection.rollback() 
         raise Exception("No fue posible insertar el usuario : " + usuario.cedula )
     
+def InsertarFamiliares( usuario: Usuario ):
+    cursor = ObtenerCursor()
+
+    for familiar in usuario.familiares :
+        cursor.execute(f"""
+    insert into familiares (
+    parentezco ,   nombre ,   apellido ,   fecha_nacimiento 
+    )
+    values (
+    '{ familiar.parentezco }',
+    '{ familiar.nombre }',
+    '{ familiar.apellido }',
+    '{ familiar.fecha_nacimiento }'
+    )
+        """)
+    
+    cursor.connection.commit()
+
 def BuscarPorCedula( cedula :str ):    
     """ Busca un usuario por el numero de Cedula """
 
