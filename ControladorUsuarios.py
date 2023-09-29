@@ -31,18 +31,10 @@ def CrearTabla():
     """
     Crea la tabla de usuarios, en caso de que no exista
     """    
-    sql = """
-create table usuarios (
-  cedula varchar( 20 )  NOT NULL,
-  nombre text not null,
-  apellido text not null,
-  telefono varchar(20),
-  correo text,
-  direccion text not null,
-  codigo_municipio varchar(40) not null,
-  codigo_departamento varchar(40) NOT NULL
-); 
-    """
+    sql = ""
+    with open("sql/crear-usuarios.sql","r") as f:
+        sql = f.read()
+
     cursor = ObtenerCursor()
     try:
         cursor.execute( sql )
@@ -57,6 +49,8 @@ def EliminarTabla():
     """    
     sql = "drop table usuarios;"
     cursor = ObtenerCursor()
+    cursor.execute( sql )
+    sql = "drop table familiares;"
     cursor.execute( sql )
     cursor.connection.commit()
 
