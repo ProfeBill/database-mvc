@@ -2,6 +2,8 @@
 # Todas las prueba sunitarias importan la biblioteca unittest
 import unittest
 
+from datetime import date
+
 from Usuario import Usuario
 import ControladorUsuarios
 
@@ -103,20 +105,20 @@ class ControllerTest(unittest.TestCase):
     def testGrupoFamiliar(self):
         usuario_prueba = Usuario( "741852369", "Borrenmme", "Please", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
         # Parametros: Parentezco, nombre, apellido, fecha nacimiento 
-        usuario_prueba.agregarFamiliar( "PADRE", "Papa", "Prueba", "1948-03-10" )
-        usuario_prueba.agregarFamiliar( "MADRE", "Mama", "Test", "1958-08-15" )
+        usuario_prueba.agregarFamiliar( "PADRE", "Papa", "Prueba", date.fromisoformat("1948-03-10") )
+        usuario_prueba.agregarFamiliar( "MADRE", "Mama", "Test", date.fromisoformat("1958-08-15") )
 
         ControladorUsuarios.Insertar( usuario_prueba )
         usuario_buscado = ControladorUsuarios.BuscarPorCedula( usuario_prueba.cedula )
-
+        print( usuario_buscado.familiares )
         usuario_prueba.esIgual( usuario_buscado )
 
 
     def testGrupoFamiliarHijos(self):
         usuario_prueba = Usuario( "654321987", "Otra", "Persona", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
         # Parametros: Parentezco, nombre, apellido, fecha nacimiento 
-        usuario_prueba.agregarFamiliar( "HIJO", "Benito", "Persona", "1998-03-10" )
-        usuario_prueba.agregarFamiliar( "HIJO", "Juanito", "Persona", "1999-08-15" )
+        usuario_prueba.agregarFamiliar( "HIJO", "Benito", "Persona", date.fromisoformat("1998-03-10") )
+        usuario_prueba.agregarFamiliar( "HIJO", "Juanito", "Persona", date.fromisoformat("1999-08-15") )
 
         ControladorUsuarios.Insertar( usuario_prueba )
         usuario_buscado = ControladorUsuarios.BuscarPorCedula( usuario_prueba.cedula )

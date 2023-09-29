@@ -4,6 +4,7 @@
     Controla las operaciones de almacenamiento de la clase Usuario
 """
 from Usuario import Usuario
+from Usuario import Familiar
 
 import sys
 import psycopg2
@@ -69,6 +70,8 @@ def BorrarFilas():
     sql = "delete from usuarios;"
     cursor = ObtenerCursor()
     cursor.execute( sql )
+    sql = "delete from familiares;"
+    cursor.execute( sql )
     cursor.connection.commit()
 
 def Borrar( usuario ):
@@ -106,14 +109,18 @@ def Insertar( usuario : Usuario ):
         raise Exception("No fue posible insertar el usuario : " + usuario.cedula )
     
 def InsertarFamiliares( usuario: Usuario ):
+    """
+    Guarda la lista de familiares asociados a un Usuario
+    """
     cursor = ObtenerCursor()
 
     for familiar in usuario.familiares :
         cursor.execute(f"""
     insert into familiares (
-    parentezco ,   nombre ,   apellido ,   fecha_nacimiento 
+        cedula_usuario, parentezco ,   nombre ,   apellido ,   fecha_nacimiento 
     )
     values (
+    '{ usuario.cedula }',
     '{ familiar.parentezco }',
     '{ familiar.nombre }',
     '{ familiar.apellido }',
@@ -135,7 +142,26 @@ def BuscarPorCedula( cedula :str ):
         raise ErrorNoEncontrado("El registro buscado, no fue encontrado. Cedula=" + cedula)
 
     resultado = Usuario( fila[0], fila[1], fila[2], fila[3], fila[4], fila[5], fila[6], fila[7])
+    BuscarFamiliares( resultado )
     return resultado
+
+def BuscarFamiliares( usuario: Usuario ):
+    """
+    Carga de la DB las filas de la tabla familiares
+    y las pone en la lista familiares de una instancia de Usuario
+    """
+    cursor = ObtenerCursor()
+    cursor.execute(f""" select cedula_usuario, parentezco, nombre, apellido, fecha_nacimiento 
+                   from familiares where cedula_usuario = '{ usuario.cedula }' """)
+    
+    lista = cursor.fetchall()
+
+    # Si la consulta no retorna, es porque el usuario no tiene familiares
+    if lista is None or lista.__len__ == 0:
+        return
+    
+    for fila in lista:
+        usuario.agregarFamiliar( fila[1], fila[2], fila[3], fila[4] )
 
 def Actualizar( usuario : Usuario ):
     """

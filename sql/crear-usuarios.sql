@@ -11,6 +11,7 @@ create table usuarios (
 ); 
 
 create table familiares (
+  cedula_usuario varchar(20),
   parentezco varchar(40), 
   nombre text, 
   apellido text, 

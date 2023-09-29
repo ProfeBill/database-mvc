@@ -1,3 +1,5 @@
+from datetime import date
+
 class Usuario:
     """
     Pertenece la Capa de Reglas de Negocio (Model)
@@ -15,13 +17,13 @@ class Usuario:
         self.codigo_municipio = codigo_municipio
         self.familiares = []
 
-    def agregarFamiliar(self, parentezco : str, nombre: str, apellido: str, fecha_nacimiento: str ):
+    def agregarFamiliar(self, parentezco : str, nombre: str, apellido: str, fecha_nacimiento: date ):
         """
         Registra una persona en el grupo familiar de un usuario
 
         Parametros: Parentezco, nombre, apellido, fecha nacimiento 
         """ 
-        persona = Familiar( parentezco, nombre, apellido, fecha_nacimiento ) 
+        persona = Familiar( parentezco, nombre, apellido, ( fecha_nacimiento)  ) 
         self.familiares.append( persona )   
 
     def esIgual( self, comparar_con ) :
@@ -40,7 +42,7 @@ class Usuario:
         posicion = 0
         # Cuando comparemos objetos que contienen listas, el primer paso 
         # es verificar que tengan el mismo numero de elementos
-        assert( self.familiares.__len__ == comparar_con.familiares.__len__ )
+        assert( len(self.familiares) == len(comparar_con.familiares) )
         
         # Estrategia: recorrer mi lista d efmailiares y comprarla con la de la otra instancia
         # Usando la posicion
