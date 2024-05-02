@@ -3,10 +3,11 @@
 
     Controla las operaciones de almacenamiento de la clase Usuario
 """
-from Usuario import Usuario
-from Usuario import Familiar
-
 import sys
+sys.path.append("src")
+from model.Usuario import Usuario
+from model.Usuario import Familiar
+
 import psycopg2
 import SecretConfig
 
@@ -19,11 +20,11 @@ def ObtenerCursor( ) :
     """
     Crea la conexion a la base de datos y retorna un cursor para ejecutar instrucciones
     """
-    DATABASE = SecretConfig.DATABASE
-    USER = SecretConfig.USER
-    PASSWORD = SecretConfig.PASSWORD
-    HOST = SecretConfig.HOST
-    PORT = SecretConfig.PORT
+    DATABASE = SecretConfig.PGDATABASE
+    USER = SecretConfig.PGUSER
+    PASSWORD = SecretConfig.PGPASSWORD
+    HOST = SecretConfig.PGHOST
+    PORT = SecretConfig.PGPORT
     connection = psycopg2.connect(database=DATABASE, user=USER, password=PASSWORD, host=HOST, port=PORT)
     return connection.cursor()
 

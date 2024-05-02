@@ -2,10 +2,13 @@
 # Todas las prueba sunitarias importan la biblioteca unittest
 import unittest
 
+import sys
+sys.path.append("src")
+
 from datetime import date
 
-from Usuario import Usuario
-import ControladorUsuarios
+from model.Usuario import Usuario
+import controller.ControladorUsuarios as ControladorUsuarios
 
 class ControllerTest(unittest.TestCase):
     """
