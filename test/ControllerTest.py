@@ -103,7 +103,9 @@ class ControllerTest(unittest.TestCase):
         ControladorUsuarios.Borrar( usuario_prueba)
 
         # 3. Buscar para verificar que no exista
-        self.assertRaises( ControladorUsuarios.ErrorNoEncontrado, ControladorUsuarios.BuscarPorCedula, usuario_prueba.cedula )
+        with self.assertRaises( ControladorUsuarios.ErrorNoEncontrado ) :
+            ControladorUsuarios.BuscarPorCedula( usuario_prueba.cedula )
+        
 
     def testGrupoFamiliar(self):
         usuario_prueba = Usuario( "741852369", "Borrenmme", "Please", "no@tiene.correo", "EN la calle", "99999", "05", "05001"  ) 
